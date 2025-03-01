@@ -20,11 +20,39 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Cập nhật lời chào
+    // Hàm lấy mô tả hero theo thời gian
+    const getHeroDescription = () => {
+        const hour = new Date().getHours();
+        if (hour >= 5 && hour < 12) {
+            return `<span class="highlight-text">Front-end Developer</span> với niềm đam mê tạo ra những trải nghiệm web tuyệt vời. 
+                    Buổi sáng tràn đầy năng lượng là thời điểm tuyệt vời để <span class="highlight-text">sáng tạo và học hỏi</span>. 
+                    Với tinh thần nhiệt huyết của buổi sáng, mình luôn hướng đến việc tạo ra những sản phẩm chất lượng cao.`;
+        } else if (hour >= 12 && hour < 18) {
+            return `<span class="highlight-text">Front-end Developer</span> với niềm đam mê tạo ra những trải nghiệm web tuyệt vời. 
+                    Ánh nắng chiều là nguồn cảm hứng để tạo ra những <span class="highlight-text">giao diện đẹp và thân thiện</span>. 
+                    Với sự tập trung cao độ của buổi chiều, mình luôn hướng đến việc tạo ra những sản phẩm hoàn hảo nhất.`;
+        } else if (hour >= 18 && hour < 22) {
+            return `<span class="highlight-text">Front-end Developer</span> với niềm đam mê tạo ra những trải nghiệm web tuyệt vời. 
+                    Không gian tĩnh lặng của buổi tối là lúc để <span class="highlight-text">sáng tạo và thử nghiệm</span>. 
+                    Với sự yên bình của buổi tối, mình tập trung vào việc tối ưu và hoàn thiện từng chi tiết.`;
+        } else {
+            return `<span class="highlight-text">Front-end Developer</span> với niềm đam mê tạo ra những trải nghiệm web tuyệt vời. 
+                    Màn đêm tĩnh lặng là thời điểm để <span class="highlight-text">suy ngẫm và lên ý tưởng mới</span>. 
+                    Với nguồn cảm hứng từ bầu trời đêm, mình luôn khám phá những công nghệ và xu hướng mới.`;
+        }
+    };
+
+    // Cập nhật lời chào và mô tả
     const greetingElement = document.querySelector('.greeting');
+    const heroDescriptionElement = document.querySelector('.hero-description');
+
     if (greetingElement) {
         const greeting = getGreeting();
         greetingElement.innerHTML = `<span class="wave">👋</span> ${greeting}, mình là`;
+    }
+
+    if (heroDescriptionElement) {
+        heroDescriptionElement.innerHTML = getHeroDescription();
     }
 
     // Menu mobile
