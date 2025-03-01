@@ -208,46 +208,230 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Disco Mode
         const activateDiscoMode = () => {
-            const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'];
-            let colorIndex = 0;
+            // Màu sắc được chọn lọc để tạo hiệu ứng đẹp mắt
+            const colors = [
+                '#FF6B6B', // Đỏ san hô
+                '#4ECDC4', // Xanh ngọc
+                '#45B7D1', // Xanh biển
+                '#96C93D', // Xanh lá
+                '#E056FD', // Tím hồng
+                '#F7D794', // Vàng nhạt
+                '#786FA6', // Tím xám
+                '#F8C291', // Cam đào
+                '#63CDDA', // Xanh biển nhạt
+                '#CF6A87'  // Hồng đỏ
+            ];
+            
             const elements = document.querySelectorAll('*');
+            let colorIndex = 0;
             
             return setInterval(() => {
                 elements.forEach(el => {
-                    if (Math.random() > 0.5) {
-                        el.style.transition = 'color 0.5s';
+                    if (Math.random() > 0.7) { // Giảm tần suất thay đổi màu
+                        el.style.transition = 'color 0.8s ease-in-out';
                         el.style.color = colors[Math.floor(Math.random() * colors.length)];
+                        
+                        // Thêm hiệu ứng glow cho text
+                        el.style.textShadow = `0 0 5px ${colors[Math.floor(Math.random() * colors.length)]}`;
                     }
                 });
                 colorIndex = (colorIndex + 1) % colors.length;
-            }, 500);
+            }, 800); // Tăng thời gian giữa các lần thay đổi
         };
 
         // Gravity Mode
         const activateGravityMode = () => {
             const elements = document.querySelectorAll('*');
             elements.forEach(el => {
-                el.style.transition = 'transform 1s cubic-bezier(.17,.67,.83,.67)';
-                el.style.transform = 'rotate(' + (Math.random() * 20 - 10) + 'deg)';
+                // Chỉ áp dụng cho các phần tử có nội dung
+                if (el.textContent.trim() || el.tagName.toLowerCase() === 'img') {
+                    // Thêm transition mượt mà hơn
+                    el.style.transition = 'transform 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+                    
+                    // Random góc nghiêng nhẹ nhàng hơn (-5 đến 5 độ)
+                    const randomRotation = Math.random() * 10 - 5;
+                    
+                    // Thêm hiệu ứng di chuyển lên xuống nhẹ
+                    const randomY = Math.random() * 10 - 5;
+                    
+                    // Áp dụng transform
+                    el.style.transform = `rotate(${randomRotation}deg) translateY(${randomY}px)`;
+                }
             });
+        };
+
+        // Rainbow Mode
+        const activateRainbowMode = () => {
+            const rainbow = document.createElement('div');
+            rainbow.style.position = 'fixed';
+            rainbow.style.top = '0';
+            rainbow.style.left = '0';
+            rainbow.style.width = '100%';
+            rainbow.style.height = '100%';
+            rainbow.style.zIndex = '-1';
+            rainbow.style.background = 'linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000)';
+            rainbow.style.backgroundSize = '400% 400%';
+            rainbow.style.animation = 'rainbow 10s ease infinite';
+            document.body.appendChild(rainbow);
+
+            // Thêm keyframe animation nếu chưa có
+            if (!document.querySelector('#rainbow-animation')) {
+                const style = document.createElement('style');
+                style.id = 'rainbow-animation';
+                style.textContent = `
+                    @keyframes rainbow {
+                        0% { background-position: 0% 50% }
+                        50% { background-position: 100% 50% }
+                        100% { background-position: 0% 50% }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+
+            // Thêm hiệu ứng cho text
+            const elements = document.querySelectorAll('*');
+            elements.forEach(el => {
+                if (el.textContent.trim()) {
+                    el.style.mixBlendMode = 'difference';
+                    el.style.color = '#fff';
+                }
+            });
+
+            return () => {
+                rainbow.remove();
+                document.querySelector('#rainbow-animation')?.remove();
+                elements.forEach(el => {
+                    el.style.mixBlendMode = '';
+                    el.style.color = '';
+                });
+            };
+        };
+
+        // Party Mode
+        const activatePartyMode = () => {
+            let cleanup = null;
+            
+            // Tạo hiệu ứng confetti
+            const createConfetti = () => {
+                const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+                const confetti = document.createElement('div');
+                confetti.style.position = 'fixed';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.top = '-20px';
+                confetti.style.width = '10px';
+                confetti.style.height = '10px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.borderRadius = '50%';
+                confetti.style.zIndex = '1000';
+                document.body.appendChild(confetti);
+
+                const animation = confetti.animate([
+                    { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
+                    { transform: `translateY(100vh) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+                ], {
+                    duration: Math.random() * 2000 + 1000,
+                    easing: 'cubic-bezier(.37,0,.63,1)'
+                });
+
+                animation.onfinish = () => confetti.remove();
+            };
+
+            // Tạo hiệu ứng nhấp nháy
+            const elements = document.querySelectorAll('*');
+            elements.forEach(el => {
+                if (el.textContent.trim()) {
+                    el.style.animation = 'party 1s infinite';
+                }
+            });
+
+            // Thêm keyframe animation
+            const style = document.createElement('style');
+            style.id = 'party-animation';
+            style.textContent = `
+                @keyframes party {
+                    0%, 100% { transform: scale(1); }
+                    50% { transform: scale(1.05); }
+                }
+            `;
+            document.head.appendChild(style);
+
+            // Tạo confetti liên tục
+            const confettiInterval = setInterval(createConfetti, 200);
+
+            cleanup = () => {
+                clearInterval(confettiInterval);
+                document.querySelectorAll('div[style*="position: fixed"]').forEach(el => el.remove());
+                document.querySelector('#party-animation')?.remove();
+                elements.forEach(el => {
+                    el.style.animation = '';
+                });
+            };
+
+            return confettiInterval;
+        };
+
+        // Neon Mode
+        const activateNeonMode = () => {
+            const elements = document.querySelectorAll('*');
+            elements.forEach(el => {
+                if (el.textContent.trim()) {
+                    el.style.transition = 'all 0.5s ease';
+                    el.style.textShadow = '0 0 5px #fff, 0 0 10px #fff, 0 0 15px #0073e6, 0 0 20px #0073e6, 0 0 25px #0073e6';
+                    el.style.color = '#fff';
+                }
+            });
+
+            document.body.style.backgroundColor = '#000';
+            document.body.style.transition = 'background-color 1s ease';
+
+            return () => {
+                elements.forEach(el => {
+                    el.style.textShadow = '';
+                    el.style.color = '';
+                });
+                document.body.style.backgroundColor = '';
+            };
         };
 
         // Secret Codes
         let currentMode = null;
+        let cleanupFunction = null;
         const secretCodes = {
             'matrix': () => {
+                if (cleanupFunction) cleanupFunction();
                 if (currentMode) clearInterval(currentMode);
                 currentMode = activateMatrixMode();
             },
             'disco': () => {
+                if (cleanupFunction) cleanupFunction();
                 if (currentMode) clearInterval(currentMode);
                 currentMode = activateDiscoMode();
             },
             'gravity': () => {
+                if (cleanupFunction) cleanupFunction();
                 if (currentMode) clearInterval(currentMode);
                 activateGravityMode();
             },
+            'rainbow': () => {
+                if (cleanupFunction) cleanupFunction();
+                if (currentMode) clearInterval(currentMode);
+                cleanupFunction = activateRainbowMode();
+            },
+            'party': () => {
+                if (cleanupFunction) cleanupFunction();
+                if (currentMode) clearInterval(currentMode);
+                currentMode = activatePartyMode();
+            },
+            'neon': () => {
+                if (cleanupFunction) cleanupFunction();
+                if (currentMode) clearInterval(currentMode);
+                cleanupFunction = activateNeonMode();
+            },
             'reset': () => {
+                if (cleanupFunction) {
+                    cleanupFunction();
+                    cleanupFunction = null;
+                }
                 if (currentMode) {
                     clearInterval(currentMode);
                     currentMode = null;
@@ -564,6 +748,18 @@ const initGameTips = () => {
         },
         {
             text: "Chuyển bàn phím sang tiếng Anh và gõ từ khóa <span class='highlight'>gravity</span> để khám phá hiệu ứng trọng lực",
+            duration: 8000
+        },
+        {
+            text: "Chuyển bàn phím sang tiếng Anh và gõ từ khóa <span class='highlight'>rainbow</span> để tạo hiệu ứng cầu vồng đẹp mắt",
+            duration: 8000
+        },
+        {
+            text: "Chuyển bàn phím sang tiếng Anh và gõ từ khóa <span class='highlight'>party</span> để bắt đầu tiệc tùng với confetti!",
+            duration: 8000
+        },
+        {
+            text: "Chuyển bàn phím sang tiếng Anh và gõ từ khóa <span class='highlight'>neon</span> để tạo hiệu ứng đèn neon lung linh",
             duration: 8000
         },
         {
