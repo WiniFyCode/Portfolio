@@ -307,16 +307,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (currentMode) clearInterval(currentMode);
                 activateGravityMode();
             },
-            'rainbow': () => {
-                if (cleanupFunction) cleanupFunction();
-                if (currentMode) clearInterval(currentMode);
-                cleanupFunction = activateRainbowMode();
-            },
-            'party': () => {
-                if (cleanupFunction) cleanupFunction();
-                if (currentMode) clearInterval(currentMode);
-                currentMode = activatePartyMode();
-            },
             'neon': () => {
                 if (cleanupFunction) cleanupFunction();
                 if (currentMode) clearInterval(currentMode);
