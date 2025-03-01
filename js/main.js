@@ -6,6 +6,27 @@ document.addEventListener('DOMContentLoaded', () => {
         homeSection.classList.add('active');
     }
 
+    // Hàm lấy lời chào theo thời gian
+    const getGreeting = () => {
+        const hour = new Date().getHours();
+        if (hour >= 5 && hour < 12) {
+            return '🌅 Chào buổi sáng';
+        } else if (hour >= 12 && hour < 18) {
+            return '☀️ Chào buổi chiều';
+        } else if (hour >= 18 && hour < 22) {
+            return '🌆 Chào buổi tối';
+        } else {
+            return '🌙 Chúc ngủ ngon';
+        }
+    };
+
+    // Cập nhật lời chào
+    const greetingElement = document.querySelector('.greeting');
+    if (greetingElement) {
+        const greeting = getGreeting();
+        greetingElement.innerHTML = `<span class="wave">👋</span> ${greeting}, mình là`;
+    }
+
     // Menu mobile
     const hamburger = document.querySelector('.hamburger');
     const navLinks = document.querySelector('.nav-links');
