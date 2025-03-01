@@ -20,33 +20,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Mảng các mô tả theo thời gian
-    const getDescriptions = () => {
+    // Hàm lấy mô tả hero theo thời gian
+    const getHeroDescription = () => {
         const hour = new Date().getHours();
         if (hour >= 5 && hour < 12) {
-            return [
-                '<span class="highlight-text">Front-end Developer</span> với niềm đam mê tạo ra những trải nghiệm web tuyệt vời.',
-                'Buổi sáng tràn đầy năng lượng là thời điểm tuyệt vời để <span class="highlight-text">sáng tạo và học hỏi</span>.',
-                'Với tinh thần nhiệt huyết của buổi sáng, mình luôn hướng đến việc tạo ra những sản phẩm chất lượng cao.'
-            ];
+            return `<span class="highlight-text">Front-end Developer</span> với niềm đam mê tạo ra những trải nghiệm web tuyệt vời. 
+                    Buổi sáng tràn đầy năng lượng là thời điểm tuyệt vời để <span class="highlight-text">sáng tạo và học hỏi</span>. 
+                    Với tinh thần nhiệt huyết của buổi sáng, mình luôn hướng đến việc tạo ra những sản phẩm chất lượng cao.`;
         } else if (hour >= 12 && hour < 18) {
-            return [
-                '<span class="highlight-text">Front-end Developer</span> với niềm đam mê tạo ra những trải nghiệm web tuyệt vời.',
-                'Ánh nắng chiều là nguồn cảm hứng để tạo ra những <span class="highlight-text">giao diện đẹp và thân thiện</span>.',
-                'Với sự tập trung cao độ của buổi chiều, mình luôn hướng đến việc tạo ra những sản phẩm hoàn hảo nhất.'
-            ];
+            return `<span class="highlight-text">Front-end Developer</span> với niềm đam mê tạo ra những trải nghiệm web tuyệt vời. 
+                    Ánh nắng chiều là nguồn cảm hứng để tạo ra những <span class="highlight-text">giao diện đẹp và thân thiện</span>. 
+                    Với sự tập trung cao độ của buổi chiều, mình luôn hướng đến việc tạo ra những sản phẩm hoàn hảo nhất.`;
         } else if (hour >= 18 && hour < 22) {
-            return [
-                '<span class="highlight-text">Front-end Developer</span> với niềm đam mê tạo ra những trải nghiệm web tuyệt vời.',
-                'Không gian tĩnh lặng của buổi tối là lúc để <span class="highlight-text">sáng tạo và thử nghiệm</span>.',
-                'Với sự yên bình của buổi tối, mình tập trung vào việc tối ưu và hoàn thiện từng chi tiết.'
-            ];
+            return `<span class="highlight-text">Front-end Developer</span> với niềm đam mê tạo ra những trải nghiệm web tuyệt vời. 
+                    Không gian tĩnh lặng của buổi tối là lúc để <span class="highlight-text">sáng tạo và thử nghiệm</span>. 
+                    Với sự yên bình của buổi tối, mình tập trung vào việc tối ưu và hoàn thiện từng chi tiết.`;
         } else {
-            return [
-                '<span class="highlight-text">Front-end Developer</span> với niềm đam mê tạo ra những trải nghiệm web tuyệt vời.',
-                'Màn đêm tĩnh lặng là thời điểm để <span class="highlight-text">suy ngẫm và lên ý tưởng mới</span>.',
-                'Với nguồn cảm hứng từ bầu trời đêm, mình luôn khám phá những công nghệ và xu hướng mới.'
-            ];
+            return `<span class="highlight-text">Front-end Developer</span> với niềm đam mê tạo ra những trải nghiệm web tuyệt vời. 
+                    Màn đêm tĩnh lặng là thời điểm để <span class="highlight-text">suy ngẫm và lên ý tưởng mới</span>. 
+                    Với nguồn cảm hứng từ bầu trời đêm, mình luôn khám phá những công nghệ và xu hướng mới.`;
         }
     };
 
@@ -59,42 +51,8 @@ document.addEventListener('DOMContentLoaded', () => {
         greetingElement.innerHTML = `<span class="wave">👋</span> ${greeting}, mình là`;
     }
 
-    // Hiệu ứng typing cho hero description
     if (heroDescriptionElement) {
-        const descriptions = getDescriptions();
-        let descIndex = 0;
-        let charIndex = 0;
-        let isDeleting = false;
-        let currentText = '';
-
-        function typeDescription() {
-            const currentDesc = descriptions[descIndex];
-            
-            if (isDeleting) {
-                currentText = currentDesc.substring(0, charIndex - 1);
-                charIndex--;
-            } else {
-                currentText = currentDesc.substring(0, charIndex + 1);
-                charIndex++;
-            }
-
-            heroDescriptionElement.innerHTML = currentText;
-
-            let typeSpeed = isDeleting ? 30 : 50;
-
-            if (!isDeleting && charIndex === currentDesc.length) {
-                typeSpeed = 2000; // Dừng 2 giây trước khi xóa
-                isDeleting = true;
-            } else if (isDeleting && charIndex === 0) {
-                isDeleting = false;
-                descIndex = (descIndex + 1) % descriptions.length;
-                typeSpeed = 500; // Dừng 0.5 giây trước khi gõ câu mới
-            }
-
-            setTimeout(typeDescription, typeSpeed);
-        }
-
-        setTimeout(typeDescription, 1000);
+        heroDescriptionElement.innerHTML = getHeroDescription();
     }
 
     // Menu mobile
