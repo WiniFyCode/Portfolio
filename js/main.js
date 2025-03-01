@@ -560,11 +560,49 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 // Form submission
 const contactForm = document.getElementById('contact-form');
 if (contactForm) {
-    contactForm.addEventListener('submit', function(e) {
+    contactForm.addEventListener('submit', async function(e) {
         e.preventDefault();
-        // Thêm xử lý gửi form ở đây
-        alert('Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi sớm nhất có thể.');
-        contactForm.reset();
+        
+        // Lấy nút submit và thêm loading state
+        const submitBtn = this.querySelector('.submit-btn');
+        const originalBtnText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang gửi...';
+        submitBtn.disabled = true;
+
+        try {
+            const formData = {
+                name: this.name.value,
+                email: this.email.value,
+                subject: this.subject.value,
+                message: this.message.value
+            };
+
+            const response = await fetch('http://localhost:5000/api/email/send', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                // Hiển thị thông báo thành công
+                alert('Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi sớm nhất có thể.');
+                contactForm.reset();
+            } else {
+                // Hiển thị thông báo lỗi
+                alert('Có lỗi xảy ra: ' + data.message);
+            }
+        } catch (error) {
+            console.error('Lỗi:', error);
+            alert('Có lỗi xảy ra khi gửi email. Vui lòng thử lại sau!');
+        } finally {
+            // Khôi phục nút submit
+            submitBtn.innerHTML = originalBtnText;
+            submitBtn.disabled = false;
+        }
     });
 }
 
