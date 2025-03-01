@@ -555,24 +555,24 @@ document.addEventListener('DOMContentLoaded', function() {
 const initGameTips = () => {
     const tips = [
         {
-            text: "Bạn có biết? Hãy nhấn <span class='highlight'>↑↑↓↓←→←→BA</span> để kích hoạt chế độ Matrix!",
+            text: "Bạn có biết? Hãy chuyển bàn phím sang tiếng Anh (Ctrl + Shift) và nhấn <span class='highlight'>↑↑↓↓←→←→BA</span> để kích hoạt chế độ Matrix!",
+            duration: 10000
+        },
+        {
+            text: "Chuyển bàn phím sang tiếng Anh và gõ từ khóa <span class='highlight'>disco</span> để biến trang web thành sàn nhảy!",
             duration: 8000
         },
         {
-            text: "Thử gõ từ khóa <span class='highlight'>disco</span> để biến trang web thành sàn nhảy!",
-            duration: 6000
-        },
-        {
-            text: "Khám phá hiệu ứng trọng lực bằng cách gõ <span class='highlight'>gravity</span>",
-            duration: 6000
+            text: "Chuyển bàn phím sang tiếng Anh và gõ từ khóa <span class='highlight'>gravity</span> để khám phá hiệu ứng trọng lực",
+            duration: 8000
         },
         {
             text: "Click theo mẫu: <span class='highlight'>Bên trái màn hình - Bên trái màn hình - Giữa - Giữa - Phải - Phải</span> để kích hoạt Disco Mode",
             duration: 10000
         },
         {
-            text: "Gõ <span class='highlight'>reset</span> để trở về trạng thái bình thường",
-            duration: 5000
+            text: "Chuyển bàn phím sang tiếng Anh và gõ <span class='highlight'>reset</span> để trở về trạng thái bình thường",
+            duration: 8000
         }
     ];
 
