@@ -104,7 +104,12 @@ document.addEventListener('DOMContentLoaded', () => {
             'Web Developer 💻',
             'UI/UX Designer 🎨',
             'Front-end Developer ⚡',
-            'Problem Solver 🔍'
+            'Problem Solver 🔍',
+            'Back-end Developer 💻',
+            'Full-stack Developer 💻',
+            'Mobile Developer 📱',
+            'Game Developer 🎮',
+            'Tech Enthusiast 💡',
         ];
         let wordIndex = 0;
         let charIndex = 0;
@@ -258,116 +263,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     el.style.transform = `rotate(${randomRotation}deg) translateY(${randomY}px)`;
                 }
             });
-        };
-
-        // Rainbow Mode
-        const activateRainbowMode = () => {
-            const rainbow = document.createElement('div');
-            rainbow.style.position = 'fixed';
-            rainbow.style.top = '0';
-            rainbow.style.left = '0';
-            rainbow.style.width = '100%';
-            rainbow.style.height = '100%';
-            rainbow.style.zIndex = '-1';
-            rainbow.style.background = 'linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000)';
-            rainbow.style.backgroundSize = '400% 400%';
-            rainbow.style.animation = 'rainbow 10s ease infinite';
-            document.body.appendChild(rainbow);
-
-            // Thêm keyframe animation nếu chưa có
-            if (!document.querySelector('#rainbow-animation')) {
-                const style = document.createElement('style');
-                style.id = 'rainbow-animation';
-                style.textContent = `
-                    @keyframes rainbow {
-                        0% { background-position: 0% 50% }
-                        50% { background-position: 100% 50% }
-                        100% { background-position: 0% 50% }
-                    }
-                `;
-                document.head.appendChild(style);
-            }
-
-            // Thêm hiệu ứng cho text
-            const elements = document.querySelectorAll('*');
-            elements.forEach(el => {
-                if (el.textContent.trim()) {
-                    el.style.mixBlendMode = 'difference';
-                    el.style.color = '#fff';
-                }
-            });
-
-            return () => {
-                rainbow.remove();
-                document.querySelector('#rainbow-animation')?.remove();
-                elements.forEach(el => {
-                    el.style.mixBlendMode = '';
-                    el.style.color = '';
-                });
-            };
-        };
-
-        // Party Mode
-        const activatePartyMode = () => {
-            let cleanup = null;
-            
-            // Tạo hiệu ứng confetti
-            const createConfetti = () => {
-                const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
-                const confetti = document.createElement('div');
-                confetti.style.position = 'fixed';
-                confetti.style.left = Math.random() * 100 + 'vw';
-                confetti.style.top = '-20px';
-                confetti.style.width = '10px';
-                confetti.style.height = '10px';
-                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                confetti.style.borderRadius = '50%';
-                confetti.style.zIndex = '1000';
-                document.body.appendChild(confetti);
-
-                const animation = confetti.animate([
-                    { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
-                    { transform: `translateY(100vh) rotate(${Math.random() * 360}deg)`, opacity: 0 }
-                ], {
-                    duration: Math.random() * 2000 + 1000,
-                    easing: 'cubic-bezier(.37,0,.63,1)'
-                });
-
-                animation.onfinish = () => confetti.remove();
-            };
-
-            // Tạo hiệu ứng nhấp nháy
-            const elements = document.querySelectorAll('*');
-            elements.forEach(el => {
-                if (el.textContent.trim()) {
-                    el.style.animation = 'party 1s infinite';
-                }
-            });
-
-            // Thêm keyframe animation
-            const style = document.createElement('style');
-            style.id = 'party-animation';
-            style.textContent = `
-                @keyframes party {
-                    0%, 100% { transform: scale(1); }
-                    50% { transform: scale(1.05); }
-                }
-            `;
-            document.head.appendChild(style);
-
-            // Tạo confetti liên tục
-            const confettiInterval = setInterval(createConfetti, 200);
-
-            cleanup = () => {
-                clearInterval(confettiInterval);
-                document.querySelectorAll('div[style*="position: fixed"]').forEach(el => el.remove());
-                document.querySelector('#party-animation')?.remove();
-                elements.forEach(el => {
-                    el.style.animation = '';
-                });
-            };
-
-            return confettiInterval;
         };
 
         // Neon Mode
@@ -778,19 +673,11 @@ const initGameTips = () => {
             duration: 8000
         },
         {
-            text: "Chuyển bàn phím sang tiếng Anh và gõ từ khóa <span class='highlight'>rainbow</span> để tạo hiệu ứng cầu vồng đẹp mắt",
-            duration: 8000
-        },
-        {
-            text: "Chuyển bàn phím sang tiếng Anh và gõ từ khóa <span class='highlight'>party</span> để bắt đầu tiệc tùng với confetti!",
-            duration: 8000
-        },
-        {
             text: "Chuyển bàn phím sang tiếng Anh và gõ từ khóa <span class='highlight'>neon</span> để tạo hiệu ứng đèn neon lung linh",
             duration: 8000
         },
         {
-            text: "Click theo mẫu: <span class='highlight'>Bên trái màn hình - Bên trái màn hình - Giữa - Giữa - Phải - Phải</span> để kích hoạt Disco Mode",
+            text: "Click theo mẫu: <span class='highlight'>Bên trái màn hình - Bên trái - Giữa - Giữa - Phải - Phải</span> để kích hoạt Disco Mode",
             duration: 10000
         },
         {
