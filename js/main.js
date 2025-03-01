@@ -650,6 +650,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Khởi tạo Game Tips
     initGameTips();
+
+    // Cập nhật thanh tiến trình cuộn
+    updateScrollProgress();
 });
 
 // Smooth scroll cho các anchor links
@@ -682,6 +685,10 @@ if (contactForm) {
 
 // Animation khi scroll
 window.addEventListener('scroll', () => {
+    // Cập nhật thanh tiến trình cuộn
+    updateScrollProgress();
+
+    // Code xử lý animation sections hiện tại
     const sections = document.querySelectorAll('section');
     sections.forEach(section => {
         const sectionTop = section.offsetTop;
@@ -691,6 +698,26 @@ window.addEventListener('scroll', () => {
         }
     });
 });
+
+// Hàm cập nhật thanh tiến trình cuộn
+const updateScrollProgress = () => {
+    const scrollProgress = document.getElementById('scrollProgressBar');
+    if (scrollProgress) {
+        // Tính toán phần trăm đã cuộn
+        const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (window.scrollY / windowHeight) * 100;
+        
+        // Cập nhật chiều rộng của thanh tiến trình
+        scrollProgress.style.width = `${scrolled}%`;
+        
+        // Thêm hiệu ứng mờ khi không cuộn
+        if (scrolled === 0) {
+            scrollProgress.style.opacity = '0';
+        } else {
+            scrollProgress.style.opacity = '1';
+        }
+    }
+};
 
 // Modal functionality
 document.addEventListener('DOMContentLoaded', function() {

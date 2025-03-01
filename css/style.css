@@ -3184,3 +3184,16 @@ h2 {
         right: 20px;
     }
 }
+
+/* Scroll Progress Bar */
+.scroll-progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 4px;
+    background: linear-gradient(to right, #64ffda, #00b8d4);
+    z-index: 9999;
+    transition: width 0.2s ease-out;
+    box-shadow: 0 2px 4px rgba(100, 255, 218, 0.2);
+}
