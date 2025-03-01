@@ -588,16 +588,211 @@ if (contactForm) {
             const data = await response.json();
 
             if (data.success) {
-                // Hiển thị thông báo thành công
-                alert('Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi sớm nhất có thể.');
+                // Tạo và hiển thị toast
+                const toast = document.createElement('div');
+                toast.className = 'toast-notification';
+                
+                // Thêm CSS trực tiếp vào head nếu chưa tồn tại
+                if (!document.querySelector('#toast-styles')) {
+                    const style = document.createElement('style');
+                    style.id = 'toast-styles';
+                    style.textContent = `
+                        @keyframes border-glow {
+                            0% {
+                                border-image: linear-gradient(45deg, #64ffda, #00b8d4, #64ffda, #00b8d4) 1;
+                                border-image-slice: 1;
+                            }
+                            25% {
+                                border-image: linear-gradient(135deg, #64ffda, #00b8d4, #64ffda, #00b8d4) 1;
+                                border-image-slice: 1;
+                            }
+                            50% {
+                                border-image: linear-gradient(225deg, #64ffda, #00b8d4, #64ffda, #00b8d4) 1;
+                                border-image-slice: 1;
+                            }
+                            75% {
+                                border-image: linear-gradient(315deg, #64ffda, #00b8d4, #64ffda, #00b8d4) 1;
+                                border-image-slice: 1;
+                            }
+                            100% {
+                                border-image: linear-gradient(45deg, #64ffda, #00b8d4, #64ffda, #00b8d4) 1;
+                                border-image-slice: 1;
+                            }
+                        }
+
+                        @keyframes border-glow-error {
+                            0% {
+                                border-image: linear-gradient(45deg, #ff4b4b, #ff416c, #ff4b4b, #ff416c) 1;
+                                border-image-slice: 1;
+                            }
+                            25% {
+                                border-image: linear-gradient(135deg, #ff4b4b, #ff416c, #ff4b4b, #ff416c) 1;
+                                border-image-slice: 1;
+                            }
+                            50% {
+                                border-image: linear-gradient(225deg, #ff4b4b, #ff416c, #ff4b4b, #ff416c) 1;
+                                border-image-slice: 1;
+                            }
+                            75% {
+                                border-image: linear-gradient(315deg, #ff4b4b, #ff416c, #ff4b4b, #ff416c) 1;
+                                border-image-slice: 1;
+                            }
+                            100% {
+                                border-image: linear-gradient(45deg, #ff4b4b, #ff416c, #ff4b4b, #ff416c) 1;
+                                border-image-slice: 1;
+                            }
+                        }
+
+                        .toast-notification {
+                            position: fixed;
+                            top: 20px;
+                            right: 20px;
+                            min-width: 300px;
+                            max-width: 400px;
+                            background: rgba(10, 25, 47, 0.95);
+                            color: #fff;
+                            padding: 15px 25px;
+                            border-radius: 10px;
+                            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                            z-index: 9999;
+                            opacity: 0;
+                            transform: translateX(100%);
+                            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+                            border: 2px solid transparent;
+                        }
+                        
+                        .toast-notification.show {
+                            opacity: 1;
+                            transform: translateX(0);
+                        }
+                        
+                        .toast-notification.success {
+                            animation: border-glow 2s linear infinite;
+                        }
+                        
+                        .toast-notification.error {
+                            animation: border-glow-error 2s linear infinite;
+                        }
+                        
+                        .toast-notification .toast-content {
+                            display: flex;
+                            align-items: center;
+                            gap: 12px;
+                        }
+                        
+                        .toast-notification .toast-icon {
+                            font-size: 24px;
+                            flex-shrink: 0;
+                        }
+                        
+                        .toast-notification .toast-message {
+                            flex-grow: 1;
+                        }
+                        
+                        .toast-notification h4 {
+                            margin: 0 0 5px 0;
+                            font-size: 16px;
+                            font-weight: 600;
+                            color: #64ffda;
+                        }
+                        
+                        .toast-notification p {
+                            margin: 0;
+                            font-size: 14px;
+                            line-height: 1.5;
+                            color: #8892b0;
+                        }
+
+                        .toast-notification.error h4 {
+                            color: #ff4b4b;
+                        }
+                    `;
+                    document.head.appendChild(style);
+                }
+
+                toast.innerHTML = `
+                    <div class="toast-content">
+                        <div class="toast-icon">🎉</div>
+                        <div class="toast-message">
+                            <h4>${data.title || 'Thành công!'}</h4>
+                            <p>${data.message}</p>
+                        </div>
+                    </div>
+                `;
+
+                document.body.appendChild(toast);
+                toast.classList.add('success');
+
+                // Animation hiển thị
+                requestAnimationFrame(() => {
+                    toast.classList.add('show');
+                });
+
+                // Tự động ẩn toast
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => toast.remove(), 500);
+                }, data.duration || 5000);
+
                 contactForm.reset();
             } else {
-                // Hiển thị thông báo lỗi
-                alert('Có lỗi xảy ra: ' + data.message);
+                // Toast thông báo lỗi
+                const toast = document.createElement('div');
+                toast.className = 'toast-notification';
+
+                toast.innerHTML = `
+                    <div class="toast-content">
+                        <div class="toast-icon">❌</div>
+                        <div class="toast-message">
+                            <h4>${data.title || 'Có lỗi xảy ra!'}</h4>
+                            <p>${data.message}</p>
+                        </div>
+                    </div>
+                `;
+
+                document.body.appendChild(toast);
+                toast.classList.add('error');
+
+                // Animation hiển thị
+                requestAnimationFrame(() => {
+                    toast.classList.add('show');
+                });
+
+                // Tự động ẩn toast
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => toast.remove(), 300);
+                }, data.duration || 5000);
             }
         } catch (error) {
             console.error('Lỗi:', error);
-            alert('Có lỗi xảy ra khi gửi email. Vui lòng thử lại sau!');
+            // Toast thông báo lỗi kết nối
+            const toast = document.createElement('div');
+            toast.className = 'toast-notification';
+
+            toast.innerHTML = `
+                <div class="toast-content">
+                    <div class="toast-icon">⚠️</div>
+                    <div class="toast-message">
+                        <h4>Lỗi Kết Nối!</h4>
+                        <p>Không thể kết nối đến máy chủ. Vui lòng thử lại sau.</p>
+                    </div>
+                </div>
+            `;
+
+            document.body.appendChild(toast);
+            toast.classList.add('error');
+
+            // Animation hiển thị
+            requestAnimationFrame(() => {
+                toast.classList.add('show');
+            });
+
+            // Tự động ẩn toast
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 5000);
         } finally {
             // Khôi phục nút submit
             submitBtn.innerHTML = originalBtnText;
