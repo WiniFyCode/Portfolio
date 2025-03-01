@@ -150,6 +150,162 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(type, 1000);
     }
 
+    // Easter Eggs
+    const addEasterEggs = () => {
+        // Konami Code
+        const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+        let konamiIndex = 0;
+
+        // Matrix Mode
+        const activateMatrixMode = () => {
+            document.body.style.transition = 'all 1s';
+            document.body.style.backgroundColor = '#000';
+            const matrixCanvas = document.createElement('canvas');
+            matrixCanvas.id = 'matrix-canvas';
+            matrixCanvas.style.position = 'fixed';
+            matrixCanvas.style.top = '0';
+            matrixCanvas.style.left = '0';
+            matrixCanvas.style.zIndex = '-1';
+            document.body.appendChild(matrixCanvas);
+
+            const matrix = matrixCanvas.getContext('2d');
+            matrixCanvas.width = window.innerWidth;
+            matrixCanvas.height = window.innerHeight;
+
+            const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+            const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const nums = '0123456789';
+            const alphabet = katakana + latin + nums;
+
+            const fontSize = 16;
+            const columns = matrixCanvas.width/fontSize;
+
+            const rainDrops = [];
+            for( let x = 0; x < columns; x++ ) {
+                rainDrops[x] = 1;
+            }
+
+            const draw = () => {
+                matrix.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                matrix.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+
+                matrix.fillStyle = '#0F0';
+                matrix.font = fontSize + 'px monospace';
+
+                for(let i = 0; i < rainDrops.length; i++) {
+                    const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                    matrix.fillText(text, i*fontSize, rainDrops[i]*fontSize);
+                    
+                    if(rainDrops[i]*fontSize > matrixCanvas.height && Math.random() > 0.975){
+                        rainDrops[i] = 0;
+                    }
+                    rainDrops[i]++;
+                }
+            };
+
+            return setInterval(draw, 30);
+        };
+
+        // Disco Mode
+        const activateDiscoMode = () => {
+            const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'];
+            let colorIndex = 0;
+            const elements = document.querySelectorAll('*');
+            
+            return setInterval(() => {
+                elements.forEach(el => {
+                    if (Math.random() > 0.5) {
+                        el.style.transition = 'color 0.5s';
+                        el.style.color = colors[Math.floor(Math.random() * colors.length)];
+                    }
+                });
+                colorIndex = (colorIndex + 1) % colors.length;
+            }, 500);
+        };
+
+        // Gravity Mode
+        const activateGravityMode = () => {
+            const elements = document.querySelectorAll('*');
+            elements.forEach(el => {
+                el.style.transition = 'transform 1s cubic-bezier(.17,.67,.83,.67)';
+                el.style.transform = 'rotate(' + (Math.random() * 20 - 10) + 'deg)';
+            });
+        };
+
+        // Secret Codes
+        let currentMode = null;
+        const secretCodes = {
+            'matrix': () => {
+                if (currentMode) clearInterval(currentMode);
+                currentMode = activateMatrixMode();
+            },
+            'disco': () => {
+                if (currentMode) clearInterval(currentMode);
+                currentMode = activateDiscoMode();
+            },
+            'gravity': () => {
+                if (currentMode) clearInterval(currentMode);
+                activateGravityMode();
+            },
+            'reset': () => {
+                if (currentMode) {
+                    clearInterval(currentMode);
+                    currentMode = null;
+                }
+                location.reload();
+            }
+        };
+
+        let secretInput = '';
+        document.addEventListener('keydown', (e) => {
+            // Konami Code Check
+            if (e.key === konamiCode[konamiIndex]) {
+                konamiIndex++;
+                if (konamiIndex === konamiCode.length) {
+                    secretCodes.matrix();
+                    konamiIndex = 0;
+                }
+            } else {
+                konamiIndex = 0;
+            }
+
+            // Secret Words Check
+            secretInput += e.key.toLowerCase();
+            Object.keys(secretCodes).forEach(code => {
+                if (secretInput.includes(code)) {
+                    secretCodes[code]();
+                    secretInput = '';
+                }
+            });
+
+            // Reset secret input after 2 seconds of no typing
+            setTimeout(() => {
+                secretInput = '';
+            }, 2000);
+        });
+
+        // Click Pattern Easter Egg
+        let clickPattern = [];
+        const targetPattern = [1, 1, 2, 2, 3, 3];
+        document.addEventListener('click', (e) => {
+            const third = window.innerWidth / 3;
+            const clickRegion = Math.ceil(e.clientX / third);
+            clickPattern.push(clickRegion);
+
+            if (clickPattern.length > targetPattern.length) {
+                clickPattern.shift();
+            }
+
+            if (clickPattern.join('') === targetPattern.join('')) {
+                secretCodes.disco();
+                clickPattern = [];
+            }
+        });
+    };
+
+    // Kích hoạt Easter Eggs
+    addEasterEggs();
+
     // Particles.js
     const particlesContainer = document.getElementById('particles-js');
     if (particlesContainer && window.particlesJS) {
@@ -272,6 +428,44 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // Easter Eggs Modal
+    const easterEggBtn = document.getElementById('easter-egg-btn');
+    const easterEggsModal = document.getElementById('easter-eggs-modal');
+    const closeEasterEggs = document.getElementById('close-easter-eggs');
+
+    if (easterEggBtn && easterEggsModal && closeEasterEggs) {
+        easterEggBtn.addEventListener('click', () => {
+            easterEggsModal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        });
+
+        closeEasterEggs.addEventListener('click', () => {
+            easterEggsModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === easterEggsModal) {
+                easterEggsModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+    }
+
+    // Highlight các khu vực click khi hover
+    const clickAreas = document.querySelectorAll('.click-area');
+    clickAreas.forEach(area => {
+        area.addEventListener('mouseenter', () => {
+            area.style.background = 'rgba(100, 255, 218, 0.2)';
+        });
+        area.addEventListener('mouseleave', () => {
+            area.style.background = 'rgba(100, 255, 218, 0.1)';
+        });
+    });
+
+    // Khởi tạo Game Tips
+    initGameTips();
 });
 
 // Smooth scroll cho các anchor links
@@ -355,4 +549,89 @@ document.addEventListener('DOMContentLoaded', function() {
             currentDetail.style.display = 'block';
         }
     }
-}); 
+});
+
+// Khởi tạo Game Tips
+const initGameTips = () => {
+    const tips = [
+        {
+            text: "Bạn có biết? Hãy nhấn <span class='highlight'>↑↑↓↓←→←→BA</span> để kích hoạt chế độ Matrix!",
+            duration: 8000
+        },
+        {
+            text: "Thử gõ từ khóa <span class='highlight'>disco</span> để biến trang web thành sàn nhảy!",
+            duration: 6000
+        },
+        {
+            text: "Khám phá hiệu ứng trọng lực bằng cách gõ <span class='highlight'>gravity</span>",
+            duration: 6000
+        },
+        {
+            text: "Click theo mẫu: <span class='highlight'>Bên trái màn hình - Bên trái màn hình - Giữa - Giữa - Phải - Phải</span> để kích hoạt Disco Mode",
+            duration: 10000
+        },
+        {
+            text: "Gõ <span class='highlight'>reset</span> để trở về trạng thái bình thường",
+            duration: 5000
+        }
+    ];
+
+    const gameTips = document.getElementById('game-tips');
+    const tipContent = gameTips.querySelector('.tip-content');
+    const nextTipBtn = document.getElementById('next-tip');
+    
+    let currentTipIndex = 0;
+    let tipTimeout;
+    let isVisible = false;
+
+    // Hiển thị tip mới
+    const showNewTip = () => {
+        const tip = tips[currentTipIndex];
+        
+        // Ẩn tip cũ
+        tipContent.classList.remove('show');
+        
+        // Cập nhật nội dung sau animation
+        setTimeout(() => {
+            tipContent.innerHTML = tip.text;
+            tipContent.classList.add('show');
+            gameTips.classList.add('show', 'new-tip');
+            
+            // Tự động ẩn tip sau một khoảng thời gian
+            clearTimeout(tipTimeout);
+            tipTimeout = setTimeout(() => {
+                if (isVisible) {
+                    hideGameTips();
+                }
+            }, tip.duration);
+        }, 300);
+
+        currentTipIndex = (currentTipIndex + 1) % tips.length;
+        isVisible = true;
+    };
+
+    // Ẩn game tips
+    const hideGameTips = () => {
+        gameTips.classList.remove('show', 'new-tip');
+        setTimeout(() => {
+            tipContent.classList.remove('show');
+        }, 300);
+        isVisible = false;
+    };
+
+    // Xử lý sự kiện click nút next
+    nextTipBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showNewTip();
+    });
+
+    // Hiển thị tip đầu tiên sau 5 giây
+    setTimeout(showNewTip, 5000);
+
+    // Hiển thị tip mới mỗi 30 giây nếu không có tương tác
+    setInterval(() => {
+        if (!isVisible) {
+            showNewTip();
+        }
+    }, 30000);
+}; 
