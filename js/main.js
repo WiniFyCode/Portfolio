@@ -1,5 +1,11 @@
 // Xử lý menu hamburger cho mobile
 document.addEventListener('DOMContentLoaded', () => {
+    // Kích hoạt section trang chủ khi tải trang
+    const homeSection = document.getElementById('home');
+    if (homeSection) {
+        homeSection.classList.add('active');
+    }
+
     // Menu mobile
     const hamburger = document.querySelector('.hamburger');
     const navLinks = document.querySelector('.nav-links');
