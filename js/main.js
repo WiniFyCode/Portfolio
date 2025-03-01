@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function type() {
             const currentWord = words[wordIndex];
-            
+
             if (isDeleting) {
                 typingElement.textContent = currentWord.substring(0, charIndex - 1);
                 charIndex--;
@@ -183,10 +183,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const alphabet = katakana + latin + nums;
 
             const fontSize = 16;
-            const columns = matrixCanvas.width/fontSize;
+            const columns = matrixCanvas.width / fontSize;
 
             const rainDrops = [];
-            for( let x = 0; x < columns; x++ ) {
+            for (let x = 0; x < columns; x++) {
                 rainDrops[x] = 1;
             }
 
@@ -197,11 +197,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 matrix.fillStyle = '#0F0';
                 matrix.font = fontSize + 'px monospace';
 
-                for(let i = 0; i < rainDrops.length; i++) {
+                for (let i = 0; i < rainDrops.length; i++) {
                     const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
-                    matrix.fillText(text, i*fontSize, rainDrops[i]*fontSize);
-                    
-                    if(rainDrops[i]*fontSize > matrixCanvas.height && Math.random() > 0.975){
+                    matrix.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+
+                    if (rainDrops[i] * fontSize > matrixCanvas.height && Math.random() > 0.975) {
                         rainDrops[i] = 0;
                     }
                     rainDrops[i]++;
@@ -226,16 +226,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 '#63CDDA', // Xanh biển nhạt
                 '#CF6A87'  // Hồng đỏ
             ];
-            
+
             const elements = document.querySelectorAll('*');
             let colorIndex = 0;
-            
+
             return setInterval(() => {
                 elements.forEach(el => {
                     if (Math.random() > 0.7) { // Giảm tần suất thay đổi màu
                         el.style.transition = 'color 0.8s ease-in-out';
                         el.style.color = colors[Math.floor(Math.random() * colors.length)];
-                        
+
                         // Thêm hiệu ứng glow cho text
                         el.style.textShadow = `0 0 5px ${colors[Math.floor(Math.random() * colors.length)]}`;
                     }
@@ -252,13 +252,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (el.textContent.trim() || el.tagName.toLowerCase() === 'img') {
                     // Thêm transition mượt mà hơn
                     el.style.transition = 'transform 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
-                    
+
                     // Random góc nghiêng nhẹ nhàng hơn (-5 đến 5 độ)
                     const randomRotation = Math.random() * 10 - 5;
-                    
+
                     // Thêm hiệu ứng di chuyển lên xuống nhẹ
                     const randomY = Math.random() * 10 - 5;
-                    
+
                     // Áp dụng transform
                     el.style.transform = `rotate(${randomRotation}deg) translateY(${randomY}px)`;
                 }
@@ -441,16 +441,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const rect = heroContent.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
-            
+
             const xc = rect.width / 2;
             const yc = rect.height / 2;
-            
+
             const dx = x - xc;
             const dy = y - yc;
-            
+
             const tiltX = dy / yc;
             const tiltY = -(dx / xc);
-            
+
             heroContent.style.transform = `perspective(1000px) rotateX(${tiltX * 10}deg) rotateY(${tiltY * 10}deg) translateZ(20px)`;
         });
 
@@ -467,10 +467,10 @@ document.addEventListener('DOMContentLoaded', () => {
         tabButtons.forEach(button => {
             button.addEventListener('click', () => {
                 const tabId = button.getAttribute('data-tab');
-                
+
                 tabButtons.forEach(btn => btn.classList.remove('active'));
                 tabContents.forEach(content => content.classList.remove('active'));
-                
+
                 button.classList.add('active');
                 document.getElementById(tabId).classList.add('active');
             });
@@ -542,12 +542,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Smooth scroll cho các anchor links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
+    anchor.addEventListener('click', function (e) {
         e.preventDefault();
         const targetId = this.getAttribute('href');
         // Kiểm tra nếu href chỉ là "#" thì bỏ qua
         if (targetId === '#') return;
-        
+
         const target = document.querySelector(targetId);
         if (target) {
             target.scrollIntoView({
@@ -560,9 +560,9 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 // Form submission
 const contactForm = document.getElementById('contact-form');
 if (contactForm) {
-    contactForm.addEventListener('submit', async function(e) {
+    contactForm.addEventListener('submit', async function (e) {
         e.preventDefault();
-        
+
         // Lấy nút submit và thêm loading state
         const submitBtn = this.querySelector('.submit-btn');
         const originalBtnText = submitBtn.innerHTML;
@@ -593,55 +593,63 @@ if (contactForm) {
                 // Tạo và hiển thị toast
                 const toast = document.createElement('div');
                 toast.className = 'toast-notification';
-                
+
                 // Thêm CSS trực tiếp vào head nếu chưa tồn tại
                 if (!document.querySelector('#toast-styles')) {
                     const style = document.createElement('style');
                     style.id = 'toast-styles';
                     style.textContent = `
                         @keyframes border-glow {
-                            0% {
-                                border-image: linear-gradient(45deg, #64ffda, #00b8d4, #64ffda, #00b8d4) 1;
-                                border-image-slice: 1;
-                            }
-                            25% {
-                                border-image: linear-gradient(135deg, #64ffda, #00b8d4, #64ffda, #00b8d4) 1;
-                                border-image-slice: 1;
+                            0%, 100% {
+                                box-shadow: 0 0 5px #64ffda,
+                                            0 0 10px #64ffda,
+                                            0 0 20px #64ffda;
+                                border-image: conic-gradient(
+                                    #64ffda 0deg,
+                                    transparent 120deg,
+                                    transparent 180deg,
+                                    #00b8d4 240deg,
+                                    #64ffda 360deg
+                                ) 1;
                             }
                             50% {
-                                border-image: linear-gradient(225deg, #64ffda, #00b8d4, #64ffda, #00b8d4) 1;
-                                border-image-slice: 1;
-                            }
-                            75% {
-                                border-image: linear-gradient(315deg, #64ffda, #00b8d4, #64ffda, #00b8d4) 1;
-                                border-image-slice: 1;
-                            }
-                            100% {
-                                border-image: linear-gradient(45deg, #64ffda, #00b8d4, #64ffda, #00b8d4) 1;
-                                border-image-slice: 1;
+                                box-shadow: 0 0 10px #64ffda,
+                                            0 0 20px #64ffda,
+                                            0 0 30px #64ffda;
+                                border-image: conic-gradient(
+                                    #00b8d4 0deg,
+                                    #64ffda 120deg,
+                                    transparent 180deg,
+                                    transparent 240deg,
+                                    #00b8d4 360deg
+                                ) 1;
                             }
                         }
 
                         @keyframes border-glow-error {
-                            0% {
-                                border-image: linear-gradient(45deg, #ff4b4b, #ff416c, #ff4b4b, #ff416c) 1;
-                                border-image-slice: 1;
-                            }
-                            25% {
-                                border-image: linear-gradient(135deg, #ff4b4b, #ff416c, #ff4b4b, #ff416c) 1;
-                                border-image-slice: 1;
+                            0%, 100% {
+                                box-shadow: 0 0 5px #ff4b4b,
+                                            0 0 10px #ff4b4b,
+                                            0 0 20px #ff4b4b;
+                                border-image: conic-gradient(
+                                    #ff4b4b 0deg,
+                                    transparent 120deg,
+                                    transparent 180deg,
+                                    #ff416c 240deg,
+                                    #ff4b4b 360deg
+                                ) 1;
                             }
                             50% {
-                                border-image: linear-gradient(225deg, #ff4b4b, #ff416c, #ff4b4b, #ff416c) 1;
-                                border-image-slice: 1;
-                            }
-                            75% {
-                                border-image: linear-gradient(315deg, #ff4b4b, #ff416c, #ff4b4b, #ff416c) 1;
-                                border-image-slice: 1;
-                            }
-                            100% {
-                                border-image: linear-gradient(45deg, #ff4b4b, #ff416c, #ff4b4b, #ff416c) 1;
-                                border-image-slice: 1;
+                                box-shadow: 0 0 10px #ff4b4b,
+                                            0 0 20px #ff4b4b,
+                                            0 0 30px #ff4b4b;
+                                border-image: conic-gradient(
+                                    #ff416c 0deg,
+                                    #ff4b4b 120deg,
+                                    transparent 180deg,
+                                    transparent 240deg,
+                                    #ff416c 360deg
+                                ) 1;
                             }
                         }
 
@@ -652,10 +660,10 @@ if (contactForm) {
                             min-width: 300px;
                             max-width: 400px;
                             background: rgba(10, 25, 47, 0.95);
+                            backdrop-filter: blur(10px);
                             color: #fff;
                             padding: 15px 25px;
                             border-radius: 10px;
-                            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
                             z-index: 9999;
                             opacity: 0;
                             transform: translateX(100%);
@@ -669,22 +677,25 @@ if (contactForm) {
                         }
                         
                         .toast-notification.success {
-                            animation: border-glow 2s linear infinite;
+                            animation: border-glow 3s ease-in-out infinite;
                         }
                         
                         .toast-notification.error {
-                            animation: border-glow-error 2s linear infinite;
+                            animation: border-glow-error 3s ease-in-out infinite;
                         }
                         
                         .toast-notification .toast-content {
                             display: flex;
                             align-items: center;
                             gap: 12px;
+                            position: relative;
+                            z-index: 1;
                         }
                         
                         .toast-notification .toast-icon {
                             font-size: 24px;
                             flex-shrink: 0;
+                            filter: drop-shadow(0 0 8px currentColor);
                         }
                         
                         .toast-notification .toast-message {
@@ -696,6 +707,7 @@ if (contactForm) {
                             font-size: 16px;
                             font-weight: 600;
                             color: #64ffda;
+                            text-shadow: 0 0 10px rgba(100, 255, 218, 0.5);
                         }
                         
                         .toast-notification p {
@@ -707,6 +719,26 @@ if (contactForm) {
 
                         .toast-notification.error h4 {
                             color: #ff4b4b;
+                            text-shadow: 0 0 10px rgba(255, 75, 75, 0.5);
+                        }
+
+                        .toast-notification::before {
+                            content: '';
+                            position: absolute;
+                            inset: 0;
+                            border-radius: 10px;
+                            padding: 2px;
+                            background: linear-gradient(45deg, transparent, rgba(100, 255, 218, 0.1), transparent);
+                            -webkit-mask: 
+                                linear-gradient(#fff 0 0) content-box, 
+                                linear-gradient(#fff 0 0);
+                            -webkit-mask-composite: xor;
+                            mask-composite: exclude;
+                            pointer-events: none;
+                        }
+
+                        .toast-notification.error::before {
+                            background: linear-gradient(45deg, transparent, rgba(255, 75, 75, 0.1), transparent);
                         }
                     `;
                     document.head.appendChild(style);
@@ -826,10 +858,10 @@ const updateScrollProgress = () => {
         // Tính toán phần trăm đã cuộn
         const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
         const scrolled = (window.scrollY / windowHeight) * 100;
-        
+
         // Cập nhật chiều rộng của thanh tiến trình
         scrollProgress.style.width = `${scrolled}%`;
-        
+
         // Thêm hiệu ứng mờ khi không cuộn
         if (scrolled === 0) {
             scrollProgress.style.opacity = '0';
@@ -840,7 +872,7 @@ const updateScrollProgress = () => {
 };
 
 // Modal functionality
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const modal = document.getElementById('project-modal');
     const closeBtn = document.querySelector('.close-modal');
     const viewDetailsBtns = document.querySelectorAll('.view-details');
@@ -874,7 +906,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function showProjectDetails(projectId) {
         const allDetails = document.querySelectorAll('.project-details');
         allDetails.forEach(detail => detail.style.display = 'none');
-        
+
         const currentDetail = document.getElementById(`${projectId}-details`);
         if (currentDetail) {
             currentDetail.style.display = 'block';
@@ -914,7 +946,7 @@ const initGameTips = () => {
     const gameTips = document.getElementById('game-tips');
     const tipContent = gameTips.querySelector('.tip-content');
     const nextTipBtn = document.getElementById('next-tip');
-    
+
     let currentTipIndex = 0;
     let tipTimeout;
     let isVisible = false;
@@ -922,16 +954,16 @@ const initGameTips = () => {
     // Hiển thị tip mới
     const showNewTip = () => {
         const tip = tips[currentTipIndex];
-        
+
         // Ẩn tip cũ
         tipContent.classList.remove('show');
-        
+
         // Cập nhật nội dung sau animation
         setTimeout(() => {
             tipContent.innerHTML = tip.text;
             tipContent.classList.add('show');
             gameTips.classList.add('show', 'new-tip');
-            
+
             // Tự động ẩn tip sau một khoảng thời gian
             clearTimeout(tipTimeout);
             tipTimeout = setTimeout(() => {
