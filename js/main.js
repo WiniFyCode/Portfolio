@@ -585,6 +585,8 @@ if (contactForm) {
                 body: JSON.stringify(formData)
             });
 
+            console.log(response);
+
             const data = await response.json();
 
             if (data.success) {
